@@ -1,11 +1,83 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { StatusBar } from "expo-status-bar";
+import { StyleSheet, Text, View } from "react-native";
+import Login from "./screens/Login";
+import MobileRegister from "./screens/MobileRegister";
+import MobileVerification from "./screens/MobileVerification";
+import EnterDriverDetails from "./screens/EnterDriverDetails";
+import EnterVehicleInformation from "./screens/EnterVehicleInformation";
+import DocumentsFirstPage from "./screens/DocumentsFirstPage";
+import EnterDocuments from "./screens/EnterDocuments";
+import RegistrationSuccessful from "./screens/RegistrationSuccessful";
+import HomeDriver from "./screens/HomeDriver";
 
 export default function App() {
+  const Stack = createNativeStackNavigator();
+
+  const StackNavigator = () => {
+    return (
+      <NavigationContainer>
+        <Stack.Navigator
+          initialRouteName="HomeDriver"
+          screenOptions={{
+            headerShown: false,
+          }}
+        >
+          <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen name="MobileRegister" component={MobileRegister} />
+          <Stack.Screen
+            name="EnterDriverDetails"
+            component={EnterDriverDetails}
+            options={{
+              headerShown: true,
+              title: "Registration",
+            }}
+          />
+          <Stack.Screen
+            name="EnterVehicleInformation"
+            component={EnterVehicleInformation}
+            options={{
+              headerShown: true,
+              title: "Registration",
+            }}
+          />
+          <Stack.Screen
+            name="EnterDocuments"
+            component={EnterDocuments}
+            options={{
+              headerShown: true,
+              title: "Registration",
+            }}
+          />
+          <Stack.Screen
+            name="HomeDriver"
+            component={HomeDriver}
+            options={{
+              headerShown: true,
+            }}
+          />
+          <Stack.Screen
+            name="RegistrationSuccessful"
+            component={RegistrationSuccessful}
+          />
+          <Stack.Screen
+            name="DocumentsFirstPage"
+            component={DocumentsFirstPage}
+          />
+
+          <Stack.Screen
+            name="MobileVerification"
+            component={MobileVerification}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    );
+  };
+
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
+      <StackNavigator />
     </View>
   );
 }
@@ -13,8 +85,5 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
 });
