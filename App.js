@@ -11,6 +11,8 @@ import DocumentsFirstPage from "./screens/DocumentsFirstPage";
 import EnterDocuments from "./screens/EnterDocuments";
 import RegistrationSuccessful from "./screens/RegistrationSuccessful";
 import HomeDriver from "./screens/HomeDriver";
+import OrderHistory from "./screens/OrderHistory";
+import OrderDetails from "./screens/OrderDetails";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -19,7 +21,7 @@ export default function App() {
     return (
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="HomeDriver"
+          initialRouteName="OrderDetails"
           screenOptions={{
             headerShown: false,
           }}
@@ -53,8 +55,25 @@ export default function App() {
           <Stack.Screen
             name="HomeDriver"
             component={HomeDriver}
+            // options={{
+            //   headerShown: true,
+            //   title: "SupplyWave",
+            // }}
+          />
+          <Stack.Screen
+            name="OrderHistory"
+            component={OrderHistory}
             options={{
               headerShown: true,
+              title: "Order History",
+            }}
+          />
+          <Stack.Screen
+            name="OrderDetails"
+            component={OrderDetails}
+            options={{
+              headerShown: true,
+              title: "Order Details",
             }}
           />
           <Stack.Screen
