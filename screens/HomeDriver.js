@@ -16,11 +16,14 @@ import OutlineButton from "../Components/OutlineButton";
 
 // Find orders screen start
 
-function FindOrders({}) {
+function FindOrders({ navigation }) {
   return (
     // <View style={styles.container}>
     <SafeAreaView style={styles.container}>
-      <View style={styles.TopView}>
+      <Pressable
+        style={styles.TopView}
+        onPress={() => navigation.navigate("OrderDetails")}
+      >
         <View style={styles.TopsubView}>
           <View style={{ flexDirection: "row" }}>
             <Ionicons name="location-sharp" size={24} color="#2A8B00" />
@@ -65,7 +68,7 @@ function FindOrders({}) {
             </View>
           </View>
         </View>
-      </View>
+      </Pressable>
     </SafeAreaView>
   );
 }

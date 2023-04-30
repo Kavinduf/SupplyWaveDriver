@@ -11,7 +11,9 @@ import React, { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
+import GreenButtonDeliver from "../Components/GreenButtonDeliver";
 import GreenButton from "../Components/GreenButton";
+import GreenButtonPickup from "../Components/GreenButtonPickup";
 
 const OrderDetails = () => {
   return (
@@ -32,11 +34,8 @@ const OrderDetails = () => {
               />
               <Text style={styles.bottomTextRight}>12/05/2023 (05.30 PM)</Text>
             </View>
-
             {/* {Time and date end} */}
-
             {/* Package id start */}
-
             <View style={styles.bottomRow}>
               <FontAwesome5
                 name="hashtag"
@@ -48,13 +47,21 @@ const OrderDetails = () => {
             </View>
 
             {/* Package id end */}
-            <View style={styles.line}></View>
 
-            <View style={{ flexDirection: "row", marginTop: 10 }}>
+            <View style={styles.line}></View>
+            <View
+              style={{
+                flexDirection: "row",
+                marginTop: 10,
+              }}
+            >
               <Ionicons name="location-sharp" size={24} color="#2A8B00" />
 
               <View style={styles.pickupView}>
                 <Text style={{ fontWeight: "500" }}>Pickup</Text>
+              </View>
+              <View style={{ marginStart: 240, alignSelf: "center" }}>
+                <FontAwesome5 name="paper-plane" size={20} color="#2A8B00" />
               </View>
             </View>
             <View
@@ -68,7 +75,11 @@ const OrderDetails = () => {
                   9/3, Canon Jacob Mendis Mawatha, Idama , Moratuwa, City,
                   Province
                 </Text>
+                <Text style={{ fontWeight: "600" }}>0763622407</Text>
               </View>
+            </View>
+            <View style={styles.Subbutton}>
+              <GreenButtonPickup title={"Picked"} />
             </View>
             <View style={styles.line}></View>
           </View>
@@ -87,6 +98,9 @@ const OrderDetails = () => {
                 <FontAwesome5 name="hashtag" size={13} color="black" />
                 <Text style={{ marginStart: 5 }}>327864823476</Text>
               </View>
+              <View style={{ marginStart: 115, alignSelf: "center" }}>
+                <FontAwesome5 name="paper-plane" size={20} color="#FFD984" />
+              </View>
             </View>
             <View
               style={{ flexDirection: "row", justifyContent: "space-between" }}
@@ -99,7 +113,11 @@ const OrderDetails = () => {
                   9/3, Canon Jacob Mendis Mawatha, Idama , Moratuwa, City,
                   Province
                 </Text>
+                <Text style={{ fontWeight: "600" }}>0763622407</Text>
               </View>
+            </View>
+            <View style={styles.Subbutton}>
+              <GreenButtonDeliver title={"Delivered"} />
             </View>
             <View style={styles.line}></View>
           </View>
@@ -118,6 +136,9 @@ const OrderDetails = () => {
                 <FontAwesome5 name="hashtag" size={13} color="black" />
                 <Text style={{ marginStart: 5 }}>327864823476</Text>
               </View>
+              <View style={{ marginStart: 115, alignSelf: "center" }}>
+                <FontAwesome5 name="paper-plane" size={20} color="#FFD984" />
+              </View>
             </View>
             <View
               style={{ flexDirection: "row", justifyContent: "space-between" }}
@@ -131,6 +152,9 @@ const OrderDetails = () => {
                   Province
                 </Text>
               </View>
+            </View>
+            <View style={styles.Subbutton}>
+              <GreenButtonDeliver title={"Delivered"} />
             </View>
             {/* <View style={styles.line}></View> */}
           </View>
@@ -150,7 +174,7 @@ const OrderDetails = () => {
         </View>
       </ScrollView>
       <View style={styles.button}>
-        <GreenButton title={"Delivered"} />
+        <GreenButton title={"Completed"} />
       </View>
     </SafeAreaView>
   );
@@ -250,5 +274,12 @@ const styles = StyleSheet.create({
   },
   button: {
     paddingHorizontal: 15,
+    paddingTop: 15,
+  },
+  Subbutton: {
+    paddingHorizontal: 25,
+    width: 250,
+    alignSelf: "center",
+    marginVertical: 10,
   },
 });
