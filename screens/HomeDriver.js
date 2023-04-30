@@ -8,8 +8,7 @@ import {
   Pressable,
 } from "react-native";
 import React, { useState } from "react";
-import { Ionicons } from "@expo/vector-icons";
-import { Feather } from "@expo/vector-icons";
+import { Ionicons, Feather, FontAwesome5 } from "@expo/vector-icons";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import DarkGreenButton from "../Components/DarkGreenButton";
 import OutlineButton from "../Components/OutlineButton";
@@ -27,9 +26,12 @@ function FindOrders({ navigation }) {
         <View style={styles.TopsubView}>
           <View style={{ flexDirection: "row" }}>
             <Ionicons name="location-sharp" size={24} color="#2A8B00" />
-
             <View style={styles.pickupView}>
-              <Text style={{ fontWeight: "500" }}>Pickup</Text>
+              <Text style={{ fontWeight: "500" }}>Drop</Text>
+            </View>
+            <View style={styles.orderId}>
+              <FontAwesome5 name="hashtag" size={13} color="black" />
+              <Text style={{ marginStart: 5 }}>327864823476</Text>
             </View>
           </View>
           <View
@@ -82,9 +84,12 @@ function ActiveOrders({}) {
         <View style={styles.TopsubView}>
           <View style={{ flexDirection: "row" }}>
             <Ionicons name="location-sharp" size={24} color="#2A8B00" />
-
             <View style={styles.pickupView}>
-              <Text style={{ fontWeight: "500" }}>Pickup</Text>
+              <Text style={{ fontWeight: "500" }}>Drop</Text>
+            </View>
+            <View style={styles.orderId}>
+              <FontAwesome5 name="hashtag" size={13} color="black" />
+              <Text style={{ marginStart: 5 }}>327864823476</Text>
             </View>
           </View>
           <View
@@ -159,7 +164,7 @@ const HomeDriver = () => {
           },
         }}
       >
-        <Tab.Screen name="Find Orders" component={ActiveOrders} />
+        <Tab.Screen name="Find Orders" component={FindOrders} />
         <Tab.Screen name="Active Orders " component={ActiveOrders} />
       </Tab.Navigator>
     </SafeAreaView>
@@ -198,6 +203,15 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginStart: 5,
     marginBottom: 5,
+  },
+  orderId: {
+    backgroundColor: "#BDE4B8",
+    padding: 4,
+    borderRadius: 5,
+    marginStart: 10,
+    marginBottom: 5,
+    flexDirection: "row",
+    alignItems: "center",
   },
   bottomView: {
     paddingHorizontal: 12,

@@ -13,6 +13,8 @@ import RegistrationSuccessful from "./screens/RegistrationSuccessful";
 import HomeDriver from "./screens/HomeDriver";
 import OrderHistory from "./screens/OrderHistory";
 import OrderDetails from "./screens/OrderDetails";
+import Profile from "./screens/Profile";
+import EditProfile from "./screens/EditProfile";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -21,13 +23,15 @@ export default function App() {
     return (
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="OrderDetails"
+          initialRouteName="Profile"
           screenOptions={{
             headerShown: false,
           }}
         >
           <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="MobileRegister" component={MobileRegister} />
+          <Stack.Screen name="Profile" component={Profile} />
+          <Stack.Screen name="EditProfile" component={EditProfile} />
           <Stack.Screen
             name="EnterDriverDetails"
             component={EnterDriverDetails}
