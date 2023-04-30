@@ -160,19 +160,18 @@ const OrderDetails = () => {
           </View>
 
           {/* {Drop end} */}
-
-          <View style={styles.bottomView}>
-            <View style={styles.bottomRow}>
-              <Text style={styles.bottomTextLeft}>Total Distance: </Text>
-              <Text style={styles.bottomTextRight}>0.00 KM</Text>
-            </View>
-            <View style={styles.bottomRow}>
-              <Text style={styles.bottomTextLeft}>Total Earning: </Text>
-              <Text style={styles.bottomTextRight}>LKR 5000.00</Text>
-            </View>
-          </View>
         </View>
       </ScrollView>
+      <View style={styles.bottomView}>
+        <View style={styles.bottomRow}>
+          <Text style={styles.bottomTextLeft}>Total Distance: </Text>
+          <Text style={styles.bottomTextRight}>0.00 KM</Text>
+        </View>
+        <View style={styles.bottomRow}>
+          <Text style={styles.bottomTextLeft}>Total Earning: </Text>
+          <Text style={styles.bottomTextRight}>LKR 5000.00</Text>
+        </View>
+      </View>
       <View style={styles.button}>
         <GreenButton title={"Completed"} />
       </View>
