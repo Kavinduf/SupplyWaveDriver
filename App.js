@@ -12,23 +12,74 @@ import EnterDocuments from "./screens/EnterDocuments";
 import RegistrationSuccessful from "./screens/RegistrationSuccessful";
 import HomeDriver from "./screens/HomeDriver";
 import OrderHistory from "./screens/OrderHistory";
-import OrderDetails from "./screens/OrderDetails";
+import PackageDetails from "./screens/PackageDetails";
 import Profile from "./screens/Profile";
 import EditProfile from "./screens/EditProfile";
+import { AppProvider } from "./context/appContext";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import ActivePackageDetails from "./screens/ActivePackageDetails";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
+  const Tab = createBottomTabNavigator();
+
+  const BottomTabNavigator = () => {
+    return (
+      <Tab.Navigator>
+        <Tab.Screen
+          name="Home"
+          component={HomeDriver}
+          options={{
+            tabBarActiveTintColor: "#2A8B00",
+            tabBarIcon: ({ color, size }) => (
+              <MaterialCommunityIcons name="home" color={color} size={size} />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Order History"
+          component={OrderHistory}
+          options={{
+            tabBarActiveTintColor: "#2A8B00",
+            tabBarIcon: ({ color, size }) => (
+              <MaterialCommunityIcons
+                name="history"
+                color={color}
+                size={size}
+              />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Profile"
+          component={Profile}
+          options={{
+            tabBarActiveTintColor: "#2A8B00",
+            tabBarIcon: ({ color, size }) => (
+              <MaterialCommunityIcons
+                name="account"
+                color={color}
+                size={size}
+              />
+            ),
+          }}
+        />
+      </Tab.Navigator>
+    );
+  };
 
   const StackNavigator = () => {
     return (
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="Profile"
+          initialRouteName="Login"
           screenOptions={{
             headerShown: false,
           }}
         >
           <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen name="HomeDriver" component={BottomTabNavigator} />
           <Stack.Screen name="MobileRegister" component={MobileRegister} />
           <Stack.Screen name="Profile" component={Profile} />
           <Stack.Screen name="EditProfile" component={EditProfile} />
@@ -56,14 +107,14 @@ export default function App() {
               title: "Registration",
             }}
           />
-          <Stack.Screen
-            name="HomeDriver"
+          {/* <Stack.Screen
+            name='HomeDriver'
             component={HomeDriver}
             // options={{
             //   headerShown: true,
             //   title: "SupplyWave",
             // }}
-          />
+          /> */}
           <Stack.Screen
             name="OrderHistory"
             component={OrderHistory}
@@ -73,8 +124,16 @@ export default function App() {
             }}
           />
           <Stack.Screen
-            name="OrderDetails"
-            component={OrderDetails}
+            name="PackageDetails"
+            component={PackageDetails}
+            options={{
+              headerShown: true,
+              title: "Order Details",
+            }}
+          />
+          <Stack.Screen
+            name="ActivePackageDetails"
+            component={ActivePackageDetails}
             options={{
               headerShown: true,
               title: "Order Details",
@@ -100,7 +159,9 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <StackNavigator />
+      <AppProvider>
+        <StackNavigator />
+      </AppProvider>
     </View>
   );
 }

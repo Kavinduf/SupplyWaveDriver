@@ -18,17 +18,17 @@ export default function MobileRegister({ navigation }) {
           behavior={Platform.OS === "ios" ? "position" : "height"}
           keyboardVerticalOffset={100}
         >
-          <Text onPress={() => navigation.navigate("Register")}>Back</Text>
+          <Text onPress={() => navigation.goBack()}>Back</Text>
           <View style={{ alignItems: "center" }}>
-            <Text style={{ fontSize: 25, fontWeight: "bold", marginTop: 50 }}>
+            <Text style={{ fontSize: 25, fontWeight: "bold", marginTop: 70 }}>
               Continue With Phone
             </Text>
-            <Text style={{ color: "#737373", marginTop: 20 }}>
+            {/* <Text style={{ color: '#737373', marginTop: 20 }}>
               We will send One Time Password
             </Text>
-            <Text style={{ color: "#737373", marginTop: 10 }}>
+            <Text style={{ color: '#737373', marginTop: 10 }}>
               to this phone number
-            </Text>
+            </Text> */}
 
             {/* header section end */}
 
@@ -43,7 +43,7 @@ export default function MobileRegister({ navigation }) {
               }}
             />
 
-            <Text style={{ color: "#737373", marginTop: 10 }}>
+            <Text style={{ color: "#737373", marginTop: 20 }}>
               Enter your phone number
             </Text>
 
@@ -56,7 +56,7 @@ export default function MobileRegister({ navigation }) {
               placeholder="0761234567"
               value={value}
               onChangeText={(text) => setValue(text)}
-              style={{ marginTop: 15, fontSize: 15 }}
+              style={{ marginTop: 25, fontSize: 15 }}
             />
 
             {/* Image & Input fields end */}
@@ -65,11 +65,14 @@ export default function MobileRegister({ navigation }) {
           <View style={{ marginHorizontal: 10, marginTop: 25 }}>
             <GreenButton
               onClick={() => {
-                navigation.navigate("MobileVerification", {
+                if (value === "") return alert("Please enter a phone number");
+                if (value.length < 10)
+                  return alert("Please enter a valid phone number");
+                navigation.navigate("EnterDriverDetails", {
                   mobileNumber: value,
                 });
               }}
-              title={"SEND OTP"}
+              title={"CONTINUE"}
             />
           </View>
           {/* button end*/}

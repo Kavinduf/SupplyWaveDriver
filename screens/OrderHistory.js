@@ -6,48 +6,58 @@ import {
   SafeAreaView,
   ScrollView,
   Pressable,
-} from "react-native";
-import React, { useState } from "react";
-import { Ionicons } from "@expo/vector-icons";
-import { Feather } from "@expo/vector-icons";
-import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import DarkGreenButton from "../Components/DarkGreenButton";
-import OutlineButton from "../Components/OutlineButton";
+  FlatList,
+} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Ionicons } from '@expo/vector-icons';
+import { Feather } from '@expo/vector-icons';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import DarkGreenButton from '../Components/DarkGreenButton';
+import OutlineButton from '../Components/OutlineButton';
+import { db } from '../firebase';
+import { collection, doc, onSnapshot, query, where } from 'firebase/firestore';
+import { useAppContext } from '../context/appContext';
+import OrderCard from '../Components/OrderHistory/OrderCard';
 
-const OrderHistory = () => {
+const OrderHistory = ({ navigation }) => {
+  const [orders, setOrders] = useState([]);
+  const { user } = useAppContext();
+
+  useEffect(() => {
+    let unsubscribe;
+    const q = query(
+      collection(db, 'packages'),
+      where('status', '==', 'delivered'),
+      where('delivery.deliveryBy', '==', 'driver'),
+      where('delivery.driver.id', '==', user.uid)
+    );
+    unsubscribe = onSnapshot(q, (querySnapshot) => {
+      const orders = [];
+      querySnapshot.forEach((doc) => {
+        orders.push({
+          id: doc.id,
+          ...doc.data(),
+        });
+      });
+      setOrders(orders);
+    });
+    return () => {
+      if (unsubscribe) unsubscribe();
+    };
+  }, []);
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headingView}>
         <Text style={styles.heading}>Completed Orders</Text>
       </View>
-      <ScrollView>
-        <SafeAreaView style={styles.container}>
-          <View style={styles.TopView}>
-            <View style={styles.TopsubView}>
-              <View style={{ marginStart: 10, marginBottom: 15 }}>
-                <Text style={{ fontWeight: "600", fontSize: 16 }}>
-                  Earning: LKR 5000.00
-                </Text>
-              </View>
-              <View style={styles.line}></View>
-              <View style={{ flexDirection: "row", marginTop: 5 }}>
-                <Ionicons name="location-sharp" size={24} color="#2A8B00" />
-
-                <View style={styles.bottomView}>
-                  <Text style={{ fontWeight: "600" }}>Maliban Pvt Ltd</Text>
-                  <Text>9/3, Canon Jacob Mendis Mawatha, Idama , Moratuwa</Text>
-                  <Text>City</Text>
-                  <Text>Province</Text>
-                </View>
-              </View>
-            </View>
-            <View style={styles.bottomRow}>
-              <Feather name="clock" size={20} color="#2A8B00" />
-              <Text style={styles.bottomTextRight}>12/05/2023 (05.30 PM)</Text>
-            </View>
-          </View>
-        </SafeAreaView>
-      </ScrollView>
+      <FlatList
+        data={orders}
+        renderItem={({ item }) => (
+          <OrderCard item={item} navigation={navigation} />
+        )}
+        key={(item) => item.id}
+      />
     </SafeAreaView>
   );
 };
@@ -56,10 +66,10 @@ export default OrderHistory;
 
 const styles = StyleSheet.create({
   TopView: {
-    backgroundColor: "#FFF",
+    backgroundColor: '#FFF',
     marginHorizontal: 15,
     borderRadius: 10,
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOffset: {
       width: 1,
       height: 1,
@@ -78,40 +88,40 @@ const styles = StyleSheet.create({
   },
   bottomView: {
     width: 305,
-    justifyContent: "center",
+    justifyContent: 'center',
     marginStart: 6,
     marginTop: 2,
   },
   container: {
     flex: 1,
-    backgroundColor: "#F5F5F5",
+    backgroundColor: '#F5F5F5',
   },
   heading: {
     // marginTop: 10,
-    alignSelf: "center",
-    fontWeight: "700",
+    alignSelf: 'center',
+    fontWeight: '700',
     fontSize: 19,
-    color: "#2A8B00",
+    color: '#2A8B00',
   },
   headingView: {
     marginTop: 15,
-    backgroundColor: "#BDE4B8",
+    backgroundColor: '#BDE4B8',
     padding: 25,
     marginHorizontal: 15,
     borderRadius: 10,
   },
   line: {
-    backgroundColor: "#eeeeee",
+    backgroundColor: '#eeeeee',
     height: 2,
   },
 
   bottomRow: {
     marginHorizontal: 10,
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   bottomTextRight: {
     marginStart: 7,
-    fontWeight: "500",
+    fontWeight: '500',
   },
 });

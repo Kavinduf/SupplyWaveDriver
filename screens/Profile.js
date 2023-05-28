@@ -7,7 +7,7 @@ import {
   Pressable,
 } from "react-native";
 import React, { useState } from "react";
-import { Image } from "@rneui/themed";
+import { Dialog, Image } from "@rneui/themed";
 import {
   FontAwesome5,
   AntDesign,
@@ -17,19 +17,34 @@ import {
   FontAwesome,
 } from "@expo/vector-icons";
 
-// import { useAppContext } from "../context/appContext";
+import { useAppContext } from "../context/appContext";
 
 const Profile = ({ navigation }) => {
-  //   const { logout, user } = useAppContext();
+  const { logout, user } = useAppContext();
+  const [isLoading, setIsLoading] = useState(false);
 
-  //   const onLogout = async () => {
-  //     await logout();
-  //     navigation.navigate("Login");
-  //     return;
-  //   };
+  const onLogout = async () => {
+    setIsLoading(true);
+    await logout();
+    setIsLoading(false);
+    navigation.navigate("Login");
+    return;
+  };
+
+  if (!user) return <View></View>;
 
   return (
     <SafeAreaView styles={styles.container}>
+      <Dialog
+        isVisible={isLoading}
+        sty
+        overlayStyle={{
+          width: 90,
+          height: 90,
+        }}
+      >
+        <Dialog.Loading />
+      </Dialog>
       <View style={styles.TopView}>
         <View
           style={{
@@ -40,8 +55,16 @@ const Profile = ({ navigation }) => {
             width: 220,
           }}
         >
-          <Text style={{ fontWeight: "bold", fontSize: 20 }}>
-            {/* {user?.name} */}
+          <Text style={{ fontWeight: "bold", fontSize: 20 }}>{user?.name}</Text>
+          <Text
+            style={{
+              fontWeight: "600",
+              fontSize: 15,
+              color: "grey",
+              marginTop: 5,
+            }}
+          >
+            {user?.mobileNumber}
           </Text>
           <Text
             style={{
@@ -51,17 +74,7 @@ const Profile = ({ navigation }) => {
               marginTop: 5,
             }}
           >
-            {/* {user?.mobileNumber} */}
-          </Text>
-          <Text
-            style={{
-              fontWeight: "600",
-              fontSize: 15,
-              color: "grey",
-              marginTop: 5,
-            }}
-          >
-            {/* {user?.email} */}
+            {user?.email}
           </Text>
           {/* <View
               style={{
@@ -89,10 +102,20 @@ const Profile = ({ navigation }) => {
         <View></View>
         <View>
           {/* {!user?.image && ( */}
-          <Image
-            style={{ width: 100, height: 100 }}
-            source={require("../assets/login-png.png")}
-          />
+          {!user?.profileImage && (
+            <Image
+              style={{ width: 100, height: 100 }}
+              source={require("../assets/login-png.png")}
+            />
+          )}
+          {user?.profileImage && (
+            <Image
+              style={{ width: 100, height: 100, borderRadius: 10 }}
+              source={{
+                uri: user?.profileImage,
+              }}
+            />
+          )}
           {/* )}
           {user?.image && ( */}
           {/* <Image
@@ -129,12 +152,12 @@ const Profile = ({ navigation }) => {
           </Text>
         </Pressable>
 
-        <View style={{ flexDirection: "row", paddingStart: 8, marginTop: 40 }}>
-          <Ionicons name="ios-settings-sharp" size={20} color="black" />
+        {/* <View style={{ flexDirection: 'row', paddingStart: 8, marginTop: 40 }}>
+          <Ionicons name='ios-settings-sharp' size={20} color='black' />
           <Text style={styles.text}>Settings</Text>
-        </View>
+        </View> */}
       </View>
-      <View style={styles.logout}>
+      <Pressable style={styles.logout} onPress={onLogout}>
         <View
           style={{
             flexDirection: "row",
@@ -151,12 +174,11 @@ const Profile = ({ navigation }) => {
               marginStart: 5,
               color: "#2A8B00",
             }}
-            // onPress={onLogout}
           >
             Logout
           </Text>
         </View>
-      </View>
+      </Pressable>
     </SafeAreaView>
   );
 };

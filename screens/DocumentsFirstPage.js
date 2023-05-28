@@ -1,32 +1,30 @@
-import React, { Component } from "react";
-import { SafeAreaView, StatusBar, StyleSheet, Text, View } from "react-native";
-import { Button, Input } from "@rneui/themed";
-import { Image } from "@rneui/themed";
-import { Icon } from "@rneui/themed";
-import { color } from "@rneui/base";
-import { KeyboardAvoidingView } from "react-native";
-import GreenButton from "../Components/GreenButton";
+import React, { Component } from 'react';
+import { SafeAreaView, StatusBar, StyleSheet, Text, View } from 'react-native';
+import { Button, Input } from '@rneui/themed';
+import { Image } from '@rneui/themed';
+import { Icon } from '@rneui/themed';
+import { color } from '@rneui/base';
+import { KeyboardAvoidingView } from 'react-native';
+import GreenButton from '../Components/GreenButton';
 
-export default function DocumentsFirstPage({ navigation }) {
+export default function DocumentsFirstPage({ navigation, route }) {
   return (
-    <View style={{ backgroundColor: "#FFF", flex: 1 }}>
+    <View style={{ backgroundColor: '#FFF', flex: 1 }}>
       <SafeAreaView style={styles.container}>
         {/* header section start */}
 
-        <Text onPress={() => navigation.navigate("EnterVehicleInformation")}>
-          Back
-        </Text>
-        <View style={{ alignItems: "center" }}>
-          <Text style={{ fontSize: 25, fontWeight: "bold", marginTop: 50 }}>
+        <Text onPress={() => navigation.goBack()}>Back</Text>
+        <View style={{ alignItems: 'center' }}>
+          <Text style={{ fontSize: 25, fontWeight: 'bold', marginTop: 50 }}>
             Enter Photos Of Your
           </Text>
-          <Text style={{ fontSize: 25, fontWeight: "bold", marginTop: 5 }}>
+          <Text style={{ fontSize: 25, fontWeight: 'bold', marginTop: 5 }}>
             Documents
           </Text>
-          <Text style={{ color: "#737373", marginTop: 20 }}>
+          <Text style={{ color: '#737373', marginTop: 20 }}>
             Please make sure the details are
           </Text>
-          <Text style={{ color: "#737373", marginTop: 5 }}>
+          <Text style={{ color: '#737373', marginTop: 5 }}>
             clearly visible
           </Text>
 
@@ -35,7 +33,7 @@ export default function DocumentsFirstPage({ navigation }) {
           {/* Image start */}
 
           <Image
-            source={require("../assets/DocumentsFirstPage-image.png")}
+            source={require('../assets/DocumentsFirstPage-image.png')}
             style={{
               width: 240,
               height: 240,
@@ -54,9 +52,12 @@ export default function DocumentsFirstPage({ navigation }) {
         >
           <GreenButton
             onClick={() => {
-              navigation.navigate("EnterDocuments");
+              navigation.navigate('EnterDocuments', {
+                values: route.params.values,
+                editMode: route.params.editMode,
+              });
             }}
-            title={"Continue"}
+            title={'Continue'}
           />
         </View>
 
@@ -71,7 +72,7 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: StatusBar.currentHeight || 30,
     // alignItems: "center",
-    justifyContent: "flex-start",
+    justifyContent: 'flex-start',
     marginHorizontal: 20,
     fontSize: 30,
   },

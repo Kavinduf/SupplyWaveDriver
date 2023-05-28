@@ -7,50 +7,60 @@ import {
   Text,
   View,
 } from "react-native";
-import { Button, Input } from "@rneui/themed";
+import { Button, Dialog, Input } from "@rneui/themed";
 import { Image } from "@rneui/themed";
 
 import { KeyboardAvoidingView } from "react-native";
 import GreenButton from "../Components/GreenButton";
-// import { auth } from "../firebase";
+import { auth } from "../firebase";
 import { useEffect, useState } from "react";
-// import { useAppContext } from "../context/appContext";
+import { useAppContext } from "../context/appContext";
 
 export default function Login({ navigation }) {
-  // const { login, autoLogin, user } = useAppContext();
-  // useEffect(() => {
-  //   console.log("user", user);
-  //   if (user) {
-  //     navigation.navigate("HomeRetailer");
-  //   }
-  // }, [user]);
+  const { login, autoLogin, user } = useAppContext();
+  const [isLoading, setIsLoading] = useState(false);
+  useEffect(() => {
+    console.log("user", user);
+    if (user) {
+      navigation.navigate("HomeDriver");
+    }
+  }, [user]);
 
-  // useEffect(() => {
-  //   autoLogin();
-  // }, []);
+  useEffect(() => {
+    autoLogin();
+  }, []);
 
-  // const [state, setState] = useState({
-  //   email: "",
-  //   password: "",
-  // });
+  const [state, setState] = useState({
+    email: "",
+    password: "",
+  });
 
-  // const onLogin = async () => {
-  //   try {
-  //     await login({ email: state.email, password: state.password });
-  //   } catch (error) {
-  //     alert(error.message);
-  //   }
-  // };
+  const onLogin = async () => {
+    if (state.email === "" || state.password === "") {
+      alert("Please fill all the fields");
+      return;
+    }
+    setIsLoading(true);
+    try {
+      await login({ email: state.email, password: state.password });
+      setIsLoading(false);
+    } catch (error) {
+      alert(error.message);
+      setIsLoading(false);
+    }
+  };
 
-  // useEffect(() => {
-  //   const user = auth.currentUser;
-  //   if (user) {
-  //     console.log("user is signed in");
-  //     navigation.navigate("HomeRetailer");
-  //   }
-  // }, []);
   return (
     <SafeAreaView style={styles.container}>
+      <Dialog
+        isVisible={isLoading}
+        overlayStyle={{
+          width: 90,
+          height: 90,
+        }}
+      >
+        <Dialog.Loading />
+      </Dialog>
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
@@ -74,13 +84,13 @@ export default function Login({ navigation }) {
             selectionColor="#2A8B00"
             keyboardType="email-address"
             placeholder="john@gmail.com"
-            // value={state.email}
-            // onChangeText={(text) => setState({ ...state, email: text })}
-            rightIcon={{
-              type: "feather",
-              name: "check",
-              size: 18,
-            }}
+            value={state.email}
+            onChangeText={(text) => setState({ ...state, email: text })}
+            // rightIcon={{
+            //   type: 'feather',
+            //   name: 'check',
+            //   size: 18,
+            // }}
             style={{ fontSize: 15 }}
           />
         </View>
@@ -90,15 +100,15 @@ export default function Login({ navigation }) {
           <Input
             textContentType="password"
             selectionColor="#2A8B00"
-            // value={state.password}
-            // onChangeText={(text) => setState({ ...state, password: text })}
+            value={state.password}
+            onChangeText={(text) => setState({ ...state, password: text })}
             placeholder="••••••••••"
             secureTextEntry={true}
-            rightIcon={{
-              type: "feather",
-              name: "eye-off",
-              size: 18,
-            }}
+            // rightIcon={{
+            //   type: 'feather',
+            //   name: 'eye-off',
+            //   size: 18,
+            // }}
             style={{ fontSize: 15 }}
           />
         </View>
@@ -119,7 +129,7 @@ export default function Login({ navigation }) {
         {/* button */}
 
         <View style={{ marginTop: 10, marginEnd: 10, marginStart: 10 }}>
-          <GreenButton onClick={onLogin} title={"SIGN IN"} />
+          <GreenButton title={"SIGN IN"} onClick={onLogin} />
         </View>
 
         {/* Text below button */}
@@ -129,9 +139,9 @@ export default function Login({ navigation }) {
             Don't Have Account?
           </Text>
           <Text
-            onPress={() => navigation.navigate("")}
+            onPress={() => navigation.navigate("MobileRegister")}
             style={{
-              marginLeft: 115,
+              marginLeft: 135,
               fontWeight: "bold",
               marginEnd: 10,
               color: "#2A8B00",

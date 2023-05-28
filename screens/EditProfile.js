@@ -12,83 +12,84 @@ import React, { useState } from "react";
 import { Dialog, Image, Input } from "@rneui/themed";
 import { Feather, AntDesign } from "@expo/vector-icons";
 import GreenButton from "../Components/GreenButton";
-//   import { useAppContext } from '../context/appContext';
-//   import { ScrollView } from 'react-native-gesture-handler';
-//   import * as ImagePicker from 'expo-image-picker';
+import { useAppContext } from "../context/appContext";
+import * as ImagePicker from "expo-image-picker";
 
 const EditProfileRetailer = ({ navigation }) => {
-  // const { user, updateUser } = useAppContext();
-  // const [isLoading, setIsLoading] = useState(false);
+  const { user, updateUser } = useAppContext();
+  const [isLoading, setIsLoading] = useState(false);
 
-  // const [image, setImage] = useState(null);
+  const [image, setImage] = useState(null);
 
-  // const pickImage = async () => {
-  //   // No permissions request is necessary for launching the image library
-  //   setIsLoading(true);
-  //   let result = await ImagePicker.launchImageLibraryAsync({
-  //     mediaTypes: ImagePicker.MediaTypeOptions.Images,
-  //     quality: 0.5,
-  //   });
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      quality: 0.5,
+    });
 
-  //   if (!result.canceled) {
-  //     const file = result.assets[0].uri;
-  //     const fileName = file.split('/').pop();
-  //     const fileType = 'image/' + fileName.split('.').pop();
-  //     setImage({ type: fileType, uri: file, name: fileName });
-  //   }
-  //   setIsLoading(false);
-  // };
+    if (!result.canceled) {
+      const file = result.assets[0].uri;
+      const fileName = file.split("/").pop();
+      const fileType = "image/" + fileName.split(".").pop();
+      setImage({ type: fileType, uri: file, name: fileName });
+    }
+  };
 
-  // const [state, setState] = useState({
-  //   mobileNumber: user?.mobileNumber,
-  //   nic: user?.nic,
-  //   name: user?.name,
-  //   address: user?.address,
-  //   uid: user?.uid,
-  //   email: user?.email,
-  // });
+  const [state, setState] = useState({
+    mobileNumber: user?.mobileNumber,
+    name: user?.name,
+    address: user?.address,
+    uid: user?.uid,
+  });
 
-  // const onUpdate = async () => {
-  //   setIsLoading(true);
-  //   await updateUser(state, image);
-  //   setIsLoading(false);
-  //   navigation.navigate('Profile');
-  // };
+  const onUpdate = async () => {
+    setIsLoading(true);
+    await updateUser(state, image);
+    setIsLoading(false);
+    // navigation.navigate('Profile');
+  };
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* <Dialog
-        //   isVisible={isLoading}
+      <Dialog
+        isVisible={isLoading}
         overlayStyle={{
           width: 90,
           height: 90,
         }}
       >
         <Dialog.Loading />
-      </Dialog> */}
+      </Dialog>
       <ScrollView>
         <View style={styles.TopView}>
           {/* <Text style={styles.heading}>Account Info</Text> */}
           <View style={{ alignSelf: "center" }}>
             {/* {image && <Image style={styles.image} source={image} />}
             {!image && !user?.image && ( */}
-            <Image
-              style={styles.image}
-              source={require("../assets/login-png.png")}
-            />
-            {/* )}
-            {!image && user?.image && (
+            {!image && !user?.profileImage && (
+              <Image
+                style={styles.image}
+                source={require("../assets/login-png.png")}
+              />
+            )}
+            {!image && user?.profileImage && (
               <Image
                 style={styles.image}
                 source={{
-                  uri: user?.image,
+                  uri: user?.profileImage,
                 }}
               />
-            )} */}
-            <Pressable
-              style={styles.editImage}
-              // onPress={pickImage}
-            >
+            )}
+            {image && (
+              <Image
+                style={styles.image}
+                source={{
+                  uri: image.uri,
+                }}
+              />
+            )}
+            <Pressable style={styles.editImage} onPress={pickImage}>
               <Text style={styles.editImageText}>Edit image</Text>
               <Feather name="edit-3" size={16} color="black" />
             </Pressable>
@@ -97,13 +98,13 @@ const EditProfileRetailer = ({ navigation }) => {
           <View style={styles.textInput}>
             <TextInput
               editable
-              // value={state.name}
-              // onChangeText={(text) =>
-              //   setState({
-              //     ...state,
-              //     name: text,
-              //   })
-              // }
+              value={state.name}
+              onChangeText={(text) =>
+                setState({
+                  ...state,
+                  name: text,
+                })
+              }
               textContentType="name"
               selectionColor="#2A8B00"
               placeholder="name*"
@@ -116,13 +117,13 @@ const EditProfileRetailer = ({ navigation }) => {
           <View style={styles.textInput}>
             <TextInput
               editable
-              // value={state.mobileNumber}
-              // onChangeText={(text) =>
-              //   setState({
-              //     ...state,
-              //     mobileNumber: text,
-              //   })
-              // }
+              value={state.mobileNumber}
+              onChangeText={(text) =>
+                setState({
+                  ...state,
+                  mobileNumber: text,
+                })
+              }
               textContentType="telephoneNumber"
               selectionColor="#2A8B00"
               keyboardType="phone-pad"
@@ -138,19 +139,19 @@ const EditProfileRetailer = ({ navigation }) => {
           <View style={styles.textInput}>
             <TextInput
               editable
-              // value={state.address}
-              // onChangeText={(text) =>
-              //   setState({
-              //     ...state,
-              //     address: text,
-              //   })
-              // }
+              value={state.address}
+              onChangeText={(text) =>
+                setState({
+                  ...state,
+                  address: text,
+                })
+              }
               textContentType="addressCityAndState"
               selectionColor="#2A8B00"
               placeholder="Address*"
               placeholderTextColor="gray"
               // numberOfLines={4}
-              maxLength={13}
+              // maxLength={13}
               // value={value}
               style={{ padding: 10 }}
             />
@@ -158,24 +159,29 @@ const EditProfileRetailer = ({ navigation }) => {
         </View>
         <Pressable
           style={styles.changePassword}
-          onPress={() => navigation.navigate("EnterVehicleInformation")}
+          onPress={() =>
+            navigation.navigate("EnterVehicleInformation", {
+              values: user,
+              editMode: true,
+            })
+          }
         >
           <Text style={styles.ChangePasswordText}>
             Change Vehicle Information
           </Text>
           <AntDesign name="right" size={18} color="black" />
         </Pressable>
-        <Pressable
+        {/* <Pressable
           style={styles.changePassword}
-          onPress={() => navigation.navigate("ChangePassword")}
+          onPress={() => navigation.navigate('ChangePassword')}
         >
           <Text style={styles.ChangePasswordText}>Change password</Text>
-          <AntDesign name="right" size={18} color="black" />
-        </Pressable>
+          <AntDesign name='right' size={18} color='black' />
+        </Pressable> */}
         <View style={styles.button}>
           <GreenButton
-            //   onClick={onUpdate}
-            //   title={'Save'}
+            onClick={onUpdate}
+            title={"Save"}
             containerStyle={{
               marginBottom: 30,
             }}
